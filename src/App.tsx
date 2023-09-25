@@ -1,22 +1,19 @@
 import React from 'react';
 import './App.css';
+import PasswordGenerator from './components/PasswordGenerator';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <div className="header">
+        <h1 className="title">Oerbyy's Password Generator</h1>
+      </div>
+
+      <div className="content">
+        <PasswordGenerator />
+      </div>
+
+      <div className="footer">&copy; 2023 Volodymyr Shchukin</div>
     </div>
   );
 }
