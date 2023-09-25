@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import './PasswordGenerator.css';
 
 import {generatePassword} from '../helpers/commonHelper';
+import PasswordDisplay from './PasswordDisplay';
 
 function PasswordGenerator() {
   const [password, setPassword] = useState<string>('');
@@ -32,9 +33,8 @@ function PasswordGenerator() {
         <div className="h-centered">
           <h1>Password Generator</h1>
         </div>
-        <input type="text" value={password} readOnly />
 
-        <button onClick={handleCopyClick}>Copy</button>
+        <PasswordDisplay password={password} onCopyClick={handleCopyClick} />
 
         <div className="password-options">
           <label>Password Length: {length}</label>
@@ -46,6 +46,9 @@ function PasswordGenerator() {
             onChange={(e) => setLength(Number(e.target.value))}
           />
         </div>
+
+        <br />
+
         <div className="password-options">
           <label>
             <input
