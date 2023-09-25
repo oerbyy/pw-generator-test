@@ -1,16 +1,33 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import './PasswordGenerator.css';
 
-import {generatePassword} from '../helpers/commonHelper';
+import {GeneratorOptions, generatePassword} from '../helpers/commonHelper';
 import PasswordDisplay from './PasswordDisplay';
 
 function PasswordGenerator() {
   const [password, setPassword] = useState<string>('');
   const [length, setLength] = useState<number>(12);
-  const [includeLowercase, setIncludeLowercase] = useState<boolean>(true);
-  const [includeUppercase, setIncludeUppercase] = useState<boolean>(false);
-  const [includeNumbers, setIncludeNumbers] = useState<boolean>(false);
-  const [includeSymbols, setIncludeSymbols] = useState<boolean>(false);
+  const [options, setOptions] = useState<GeneratorOptions>({
+    includeLowercase: true,
+    includeUppercase: false,
+    includeNumbers: false,
+    includeSymbols: false,
+  });
+
+  const handleOptionsChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const name: keyof GeneratorOptions = e.target.name as keyof GeneratorOptions;
+
+    const isTheLastChecked =
+      options[name] === true &&
+      Object.values(options).filter((el: boolean) => el === true).length <= 1;
+
+    if (!isTheLastChecked) {
+      setOptions((prev: GeneratorOptions) => ({
+        ...options,
+        [name]: !prev[name],
+      }));
+    }
+  };
 
   const handleCopyClick = () => {
     if (password) {
@@ -20,10 +37,7 @@ function PasswordGenerator() {
   };
 
   const handleGeneratePassword = () => {
-    const newPassword = generatePassword(
-      {includeLowercase, includeUppercase, includeNumbers, includeSymbols},
-      length
-    );
+    const newPassword = generatePassword(options, length);
     setPassword(newPassword);
   };
 
@@ -53,8 +67,9 @@ function PasswordGenerator() {
           <label>
             <input
               type="checkbox"
-              checked={includeLowercase}
-              onChange={() => setIncludeLowercase(!includeLowercase)}
+              name="includeLowercase"
+              checked={options['includeLowercase']}
+              onChange={handleOptionsChange}
             />
             Include Lowercase
           </label>
@@ -63,8 +78,9 @@ function PasswordGenerator() {
           <label>
             <input
               type="checkbox"
-              checked={includeUppercase}
-              onChange={() => setIncludeUppercase(!includeUppercase)}
+              name="includeUppercase"
+              checked={options['includeUppercase']}
+              onChange={handleOptionsChange}
             />
             Include Uppercase
           </label>
@@ -73,8 +89,9 @@ function PasswordGenerator() {
           <label>
             <input
               type="checkbox"
-              checked={includeNumbers}
-              onChange={() => setIncludeNumbers(!includeNumbers)}
+              name="includeNumbers"
+              checked={options['includeNumbers']}
+              onChange={handleOptionsChange}
             />
             Include Numbers
           </label>
@@ -83,8 +100,9 @@ function PasswordGenerator() {
           <label>
             <input
               type="checkbox"
-              checked={includeSymbols}
-              onChange={() => setIncludeSymbols(!includeSymbols)}
+              name="includeSymbols"
+              checked={options['includeSymbols']}
+              onChange={handleOptionsChange}
             />
             Include Symbols
           </label>
